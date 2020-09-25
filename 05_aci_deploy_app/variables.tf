@@ -34,12 +34,12 @@ variable "contracts" {
     contract_web = {
       contract = "web",
       subject  = "https",
-      filter   = "https"
+      filter   = "filter_https"
     },
     contract_sql = {
       contract = "sql",
       subject  = "sql",
-      filter   = "sql"
+      filter   = "filter_sql"
     }
   }
 }

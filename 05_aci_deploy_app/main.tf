@@ -53,12 +53,11 @@ resource "aci_contract" "terraform_contract" {
 }
 
 resource "aci_contract_subject" "terraform_contract_subject" {
-    for_each      = var.contracts
-    contract_dn   = aci_contract.terraform_contract[each.key].id
-    name          = each.value.subject
+    for_each                      = var.contracts
+    contract_dn                   = aci_contract.terraform_contract[each.key].id
+    name                          = each.value.subject
+    relation_vz_rs_subj_filt_att  = [aci_filter.terraform_filter[each.value.filter].id]
 }
-
-# add filter to contract subject
 
 resource "aci_application_profile" "terraform_ap" {
     tenant_dn  = aci_tenant.terraform_tenant.id
@@ -71,12 +70,12 @@ resource "aci_application_epg" "terraform_epg" {
     name                    = each.value.epg
 }
 
-# ENSURE DOMAIN IS BOUND TO EPG
-# resource "aci_epg_to_domain" "terraform_epg_domain" {
-#     for_each              = var.epgs
-#     application_epg_dn    = aci_application_epg.terraform_epg[each.key].id
-#     tdn                   = aci_vmm_domain.example.id
-# }
+#ENSURE DOMAIN IS BOUND TO EPG
+resource "aci_epg_to_domain" "terraform_epg_domain" {
+    for_each              = var.epgs
+    application_epg_dn    = aci_application_epg.terraform_epg[each.key].id
+    tdn                   = "uni/vmmp-VMware/dom-aci_terraform_lab"
+}
 
 resource "aci_epg_to_contract" "terraform_epg_contract" {
     for_each           = var.epg_contracts
