@@ -83,14 +83,3 @@ resource "aci_epg_to_contract" "terraform_epg_contract" {
     contract_dn  = aci_contract.terraform_contract[each.value.contract].id
     contract_type = each.value.contract_type
 }
-
-# aci_rest
-resource "aci_rest" "rest_l3_ext_out" {
-    path       = "/api/node/mo/${aci_tenant.terraform_tenant.id}/out-corp_l3.json"
-    class_name = "l3extOut"
-
-    content = {
-        "name" = "corp_l3"
-        "descr" = "Created Using Terraform"
-    }
-}
